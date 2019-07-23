@@ -9,7 +9,6 @@ export default class Registration extends React.Component {
     }
     handleChange(e) {
         this[e.target.name] = e.target.value;
-        console.log(e.target.value);
         // this.setState({ [e.target.name]: e.target.value }); -->this is not neccessary because we don't have to render immidietly on this page
     }
     submit(e) {
@@ -22,8 +21,7 @@ export default class Registration extends React.Component {
                 pass: this.pass //this.state.pass
             })
             .then(({ data }) => {
-                console.log(data.name);
-                if (data.success) {
+                if (data.loggedIn) {
                     location.replace("/");
                 } else {
                     this.setState({
@@ -53,6 +51,7 @@ export default class Registration extends React.Component {
                 />
                 <input
                     name="pass"
+                    type="password"
                     onChange={e => this.handleChange(e)}
                     placeholder="Password"
                 />

@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const compression = require("compression");
 const db = require("./utils/db");
+const bc = require("./utils/bc");
+var cookieSession = require("cookie-session");
+app.use(require("body-parser").json());
+
 app.use(express.static("./public"));
 app.set("view engine", "handlebars");
-var cookieSession = require("cookie-session");
 app.use(compression());
 app.use(
     cookieSession({
@@ -12,7 +15,7 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
-app.use(require("body-parser").json());
+
 if (process.env.NODE_ENV != "production") {
     app.use(
         "/bundle.js",
@@ -32,7 +35,20 @@ app.get("*", function(req, res) {
     }
 });
 app.post("/register", function(req, res) {
-    db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
+    bc.hashPassword(req.body.pass).then(hashedpw => {
+        return db
+            .addUser(req.body.first, req.body.last, req.body.email, hashedpw)
+            .then(results => {
+                console.log(results);
+                req.session.userId = results.rows[0].id;
+                res.json({ loggedIn: true });
+                console.log("ciao, i'm here");
+            })
+            .catch(err => {
+                console.log("err in registering: ", err);
+            });
+    });
+    // db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
 });
 
 app.listen(8080, function() {
