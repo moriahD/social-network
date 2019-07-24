@@ -1,23 +1,18 @@
 import React from "react";
 import axios from "./axios";
-import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        // this.submit = this.submit.bind(this); instead of {this.submit} and binding , write function name below like this-> <button onClick={e=>this.submit()}>
     }
     handleChange(e) {
         this[e.target.name] = e.target.value;
-        // this.setState({ [e.target.name]: e.target.value }); -->this is not neccessary because we don't have to render immidietly on this page
     }
     submit(e) {
         e.preventDefault();
         axios
-            .post("/register", {
-                first: this.first, //this.state.first ->if we set State above
-                last: this.last, //this.state.last
+            .post("/login", {
                 email: this.email, //this.state.email
                 pass: this.pass //this.state.pass
             })
@@ -35,16 +30,7 @@ export default class Registration extends React.Component {
         return (
             <div>
                 {this.state.error && <div className="error">Oops!</div>}
-                <input
-                    name="first"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="First Name"
-                />
-                <input
-                    name="last"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="Last Name"
-                />
+
                 <input
                     name="email"
                     onChange={e => this.handleChange(e)}
@@ -56,9 +42,7 @@ export default class Registration extends React.Component {
                     onChange={e => this.handleChange(e)}
                     placeholder="Password"
                 />
-                <button onClick={e => this.submit(e)}>register</button>
-                <p>Already a member?</p>
-                <Link to="/login">Click here to Log In!</Link>
+                <button onClick={e => this.submit(e)}>login</button>
             </div>
         );
     }

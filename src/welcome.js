@@ -1,5 +1,8 @@
 import React from "react";
 import Registration from "./registration";
+import Login from "./login";
+import { HashRouter, Route } from "react-router-dom";
+
 export default class Welcome extends React.Component {
     constructor(props) {
         super(props);
@@ -8,20 +11,23 @@ export default class Welcome extends React.Component {
     }
     render() {
         return (
-            <div>
-                <p>Welcome to </p>
-                <p>our social network!</p>
-                <p>
-                    we are rebelling because all the other online communities
-                    are revolting.
-                </p>
-                <p>Join the rebellion!</p>
-                {this.state.error && <div className="error">Oops!</div>}
-                <Registration />
-                <p>
-                    Already a member? <a href="/login">Log in</a>
-                </p>
-            </div>
+            <HashRouter>
+                <div className="registrationBox">
+                    <p>Welcome to </p>
+                    <p className="logotitle">sharing love</p>
+                    <p>
+                        we are rebelling because all the other online
+                        communities are revolting.
+                    </p>
+                    <p>Join the rebellion!</p>
+                    {this.state.error && <div className="error">Oops!</div>}
+
+                    <div>
+                        <Route exact path="/" component={Registration} />
+                        <Route path="/login" component={Login} />
+                    </div>
+                </div>
+            </HashRouter>
         );
     }
 }

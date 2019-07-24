@@ -4,6 +4,7 @@ const compression = require("compression");
 const db = require("./utils/db");
 const bc = require("./utils/bc");
 var cookieSession = require("cookie-session");
+const csurf = require("csurf");
 app.use(require("body-parser").json());
 
 app.use(express.static("./public"));
@@ -15,6 +16,12 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
+app.use(csurf());
+
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -28,8 +35,15 @@ if (process.env.NODE_ENV != "production") {
 }
 
 app.get("*", function(req, res) {
-    if (!req.session.userId) {
+    if (!req.session.userId && req.url != "/welcome") {
         res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
+app.get("/welcome", function(req, res) {
+    if (req.session.userId) {
+        res.redirect("/");
     } else {
         res.sendFile(__dirname + "/index.html");
     }
@@ -41,7 +55,7 @@ app.post("/register", function(req, res) {
             .then(results => {
                 console.log(results);
                 req.session.userId = results.rows[0].id;
-                res.json({ loggedIn: true });
+                res.json({ success: true });
                 console.log("ciao, i'm here");
             })
             .catch(err => {
