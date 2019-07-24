@@ -65,6 +65,39 @@ app.post("/register", function(req, res) {
     // db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
 });
 
+app.post("/login", function(req, res) {
+    //first check if the user is
+    console.log("req.body.email:", req.body.email);
+    db.getUserId(req.body.email)
+        .then(result => {
+            if (!result.rows[0]) {
+                res.json({
+                    error: "Something is wrong! Please try to type carefully."
+                });
+            } else {
+                req.session.userId = result.rows[0].id;
+                //console.log("id", req.session.userId);
+                return result;
+            }
+        })
+        .then(result => {
+            console.log("req.body.password", result);
+            bc.checkPassword(req.body.pass, result.rows[0].password)
+                .then(results => {
+                    if (!results) {
+                        res.json({
+                            error: true
+                        });
+                    } else {
+                        res.json({ success: true });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+});
+
 app.listen(8080, function() {
     console.log("I'm listening.");
 });
