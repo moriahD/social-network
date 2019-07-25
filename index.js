@@ -33,41 +33,20 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-
-app.get("*", function(req, res) {
-    if (!req.session.userId && req.url != "/welcome") {
-        res.redirect("/welcome");
-    } else {
-        res.sendFile(__dirname + "/index.html");
+app.post("/register", async (req, res) => {
+    const { first, last, email, pass } = req.body;
+    try {
+        let hashedpw = await bc.hashPassword(pass);
+        let id = await db.addUser(first, last, email, hashedpw);
+        req.session.userId = id;
+        res.json({ success: true });
+    } catch (err) {
+        console.log("err in POST /registration", err);
     }
-});
-app.get("/welcome", function(req, res) {
-    if (req.session.userId) {
-        res.redirect("/");
-    } else {
-        res.sendFile(__dirname + "/index.html");
-    }
-});
-app.post("/register", function(req, res) {
-    bc.hashPassword(req.body.pass).then(hashedpw => {
-        return db
-            .addUser(req.body.first, req.body.last, req.body.email, hashedpw)
-            .then(results => {
-                console.log(results);
-                req.session.userId = results.rows[0].id;
-                res.json({ success: true });
-                console.log("ciao, i'm here");
-            })
-            .catch(err => {
-                console.log("err in registering: ", err);
-            });
-    });
-    // db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
 });
 
 app.post("/login", function(req, res) {
     //first check if the user is
-    console.log("req.body.email:", req.body.email);
     db.getUserId(req.body.email)
         .then(result => {
             if (!result.rows[0]) {
@@ -76,7 +55,7 @@ app.post("/login", function(req, res) {
                 });
             } else {
                 req.session.userId = result.rows[0].id;
-                //console.log("id", req.session.userId);
+
                 return result;
             }
         })
@@ -97,7 +76,47 @@ app.post("/login", function(req, res) {
                 });
         });
 });
+app.get("/user", async function(req, res) {
+    const user = await db.getUserById(req.session.userId);
+    if (!user.image) {
+        user.image = "/images/default.png";
+    }
+    res.json({ user });
+});
 
+app.get("/welcome", function(req, res) {
+    if (req.session.userId) {
+        res.redirect("/");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
+
+// --------------- DO NOT DELETE THIS ------------------ //
+app.get("*", function(req, res) {
+    if (!req.session.userId && req.url != "/welcome") {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
+// --------------- DO NOT DELETE THIS ------------------ //
 app.listen(8080, function() {
     console.log("I'm listening.");
 });
+
+// app.post("/register", function(req, res) {
+//     bc.hashPassword(req.body.pass).then(hashedpw => {
+//         return db
+//             .addUser(req.body.first, req.body.last, req.body.email, hashedpw)
+//             .then(results => {
+//                 console.log(results);
+//                 req.session.userId = results.rows[0].id;
+//                 res.json({ success: true });
+//             })
+//             .catch(err => {
+//                 console.log("err in registering: ", err);
+//             });
+//     });
+//     // db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
+// });

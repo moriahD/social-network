@@ -35,28 +35,35 @@ export default class Registration extends React.Component {
         return (
             <div>
                 {this.state.error && <div className="error">Oops!</div>}
-                <input
-                    name="first"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="First Name"
-                />
-                <input
-                    name="last"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="Last Name"
-                />
-                <input
-                    name="email"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="Email"
-                />
-                <input
-                    name="pass"
-                    type="password"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="Password"
-                />
-                <button onClick={e => this.submit(e)}>register</button>
+                <form>
+                    <input
+                        name="first"
+                        type="text"
+                        onChange={e => this.handleChange(e)}
+                        placeholder="First Name"
+                    />
+                    <input
+                        name="last"
+                        type="text"
+                        onChange={e => this.handleChange(e)}
+                        placeholder="Last Name"
+                    />
+                    <input
+                        name="email"
+                        type="text"
+                        onChange={e => this.handleChange(e)}
+                        placeholder="Email"
+                    />
+                    <input
+                        name="pass"
+                        type="current-password"
+                        onChange={e => this.handleChange(e)}
+                        placeholder="password"
+                    />
+                    <div>
+                        <button onClick={e => this.submit(e)}>register</button>
+                    </div>
+                </form>
                 <p>Already a member?</p>
                 <Link to="/login">Click here to Log In!</Link>
             </div>

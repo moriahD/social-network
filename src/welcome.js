@@ -13,18 +13,23 @@ export default class Welcome extends React.Component {
         return (
             <HashRouter>
                 <div className="registrationBox">
-                    <p>Welcome to </p>
-                    <p className="logotitle">sharing love</p>
-                    <p>
-                        we are rebelling because all the other online
-                        communities are revolting.
-                    </p>
-                    <p>Join the rebellion!</p>
-                    {this.state.error && <div className="error">Oops!</div>}
+                    <div className="leftBox">
+                        <div>
+                            <h2>Become a member</h2>
+                        </div>
+                    </div>
+                    <div className="rightBox">
+                        <p className="styledP">
+                            Vivamus pellentesque augue id leo vehicula, sit amet
+                            tempor nibh dictum.
+                        </p>
+                        <p>Join the rebellion!</p>
+                        {this.state.error && <div className="error">Oops!</div>}
 
-                    <div>
-                        <Route exact path="/" component={Registration} />
-                        <Route path="/login" component={Login} />
+                        <div>
+                            <Route exact path="/" component={Registration} />
+                            <Route path="/login" component={Login} />
+                        </div>
                     </div>
                 </div>
             </HashRouter>

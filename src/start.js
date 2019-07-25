@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 // import App from "./App";
 import Welcome from "./welcome";
+import App from "./app";
 
 let elem;
 
@@ -10,18 +11,9 @@ if (location.pathname == "/welcome") {
     elem = <Welcome />;
 } else {
     //they are logged in
-    elem = <img className="logoSmall" src="/images/logo.png" />;
+    // elem = <img className="logoSmall" src="/images/logo.png" />;
+    elem = <App />;
 }
 
+//without this none will show on the browser
 ReactDOM.render(elem, document.querySelector("main"));
-
-// ReactDOM.render(<App />, document.querySelector("main"));
-//
-// export default function HelloWorld() {
-//     return (
-//         <div>
-//             <h1>Good morning :)</h1>
-//             <p>ciaoooooooooo</p>
-//         </div>
-//     );
-// }
