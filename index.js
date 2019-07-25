@@ -202,11 +202,11 @@ app.get("/friendshipList/:id.json", async function(req, res) {
 app.post("/friendshipList/:id.json", async function(req, res) {
     try {
         console.log("req.body.button:", req.body.button);
+        const result = await db.requestFriendship(
+            req.session.userId,
+            req.params.id
+        );
         if (req.body.button == "Send Friend Request to") {
-            const result = await db.requestFriendship(
-                req.session.userId,
-                req.params.id
-            );
             res.json({ button: "Cancel Friend Request to" });
         } else if (
             req.body.button == "Cancel Friend Request to" ||
@@ -227,6 +227,16 @@ app.post("/friendshipList/:id.json", async function(req, res) {
     } catch (err) {
         console.log("Error posting frienship info: ", err);
     }
+});
+app.get("/friends.json", (req, res) => {
+    db.getfriends(req.session.userId)
+        .then(rows => {
+            console.log("friends rows: ", rows);
+            return res.json(rows);
+        })
+        .catch(err => {
+            console.log("Error getting friends list: ", err);
+        });
 });
 app.post("/bio", async function(req, res) {
     const bio = req.body.bio;

@@ -4,7 +4,17 @@ import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
 
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import reduxPromise from "redux-promise";
+import reducer from "./reducer";
+
+import { composeWithDevTools } from "redux-devtools-extension";
 let elem;
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(reduxPromise))
+);
 
 if (location.pathname == "/welcome") {
     //they are logged out
@@ -12,7 +22,11 @@ if (location.pathname == "/welcome") {
 } else {
     //they are logged in
     // elem = <img className="logoSmall" src="/images/logo.png" />;
-    elem = <App />;
+    elem = (
+        <Provider store={store}>
+            <App />;
+        </Provider>
+    );
 }
 
 //without this none will show on the browser
