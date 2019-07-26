@@ -22,6 +22,32 @@ app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
+const s3 = require("./s3");
+const config = require("./config");
+
+/////////// for stroing uploaded file ///////////
+var multer = require("multer"); //saving files to your harddrive
+var uidSafe = require("uid-safe");
+var path = require("path"); //
+var diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+/////////// END: for stroing uploaded file ///////////
+app.use(require("body-parser").json());
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -37,8 +63,10 @@ app.post("/register", async (req, res) => {
     const { first, last, email, pass } = req.body;
     try {
         let hashedpw = await bc.hashPassword(pass);
-        let id = await db.addUser(first, last, email, hashedpw);
-        req.session.userId = id;
+        let user = await db.addUser(first, last, email, hashedpw);
+
+        req.session.userId = user.rows[0].id;
+        console.log("req.session.userId in register: ", req.session.userId);
         res.json({ success: true });
     } catch (err) {
         console.log("err in POST /registration", err);
@@ -76,12 +104,40 @@ app.post("/login", function(req, res) {
                 });
         });
 });
-app.get("/user", async function(req, res) {
-    const user = await db.getUserById(req.session.userId);
-    if (!user.image) {
-        user.image = "/images/default.png";
+app.post("/uploader", uploader.single("file"), s3.upload, (req, res) => {
+    if (req.file) {
+        const url = config.s3Url + req.file.filename;
+
+        console.log("url", url);
+        // const { userId } = req.session.userId;
+        // console.log("req.session.userId", userId);
+
+        db.updateUserAvatar(url, req.session.userId)
+            .then(result => {
+                console.log("result", result);
+                return res.json({ image: url });
+            })
+            .catch(err => {
+                console.log("err for inserting avartar to data", err);
+            });
+    } else {
+        console.log("Error in upload: ");
+        res.status(500).json();
     }
-    res.json({ user });
+    // res.json({ image });
+});
+app.get("/user", async function(req, res) {
+    try {
+        console.log("req.session.userId: ", req.session.userId);
+        const user = await db.getUserById(req.session.userId);
+
+        if (!user.image) {
+            user.image = "/images/default.png";
+        }
+        res.json({ user });
+    } catch (err) {
+        console.log("Error Message in /user router: ", err);
+    }
 });
 
 app.get("/welcome", function(req, res) {

@@ -21,7 +21,10 @@ exports.getUserId = function(email) {
 
 exports.getUserById = function getUserById(id) {
     return db.query(
-        "SELECT image, first_name, last_name FROM users WHERE id = $1",
+        `SELECT image, first_name, last_name FROM users WHERE id = $1`,
         [id]
     );
+};
+exports.updateUserAvatar = function updateUserAvatar(image, id) {
+    return db.query(`UPDATE users SET image = $1  WHERE id = $2`, [image, id]);
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import Uploader from "./uploader";
-import Profile from "./profilepic";
+import ProfilePic from "./profilepic";
 import axios from "./axios";
 //use class when you need lifecycle...something?
 
@@ -30,7 +30,7 @@ export default class App extends React.Component {
                     />
                     <p className="welcometxt">Welcome to blablabla</p>
                     <div className="profileWrap">
-                        <Profile
+                        <ProfilePic
                             image={this.state.image}
                             first={this.state.first_name}
                             last={this.state.last_name}
@@ -42,7 +42,14 @@ export default class App extends React.Component {
                 </div>
 
                 {this.state.uploaderIsVisible && (
-                    <Uploader done={image => this.setState({ image })} />
+                    <Uploader
+                        onClick={() =>
+                            this.setState({
+                                uploaderIsVisible: false
+                            })
+                        }
+                        done={image => this.setState({ image })}
+                    />
                 )}
             </div>
         );
