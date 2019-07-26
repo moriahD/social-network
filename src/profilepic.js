@@ -1,13 +1,9 @@
 import React from "react";
 
-export default function({ image, first_name, last_name, onClick }) {
+export default function({ image, first, last, onClick }) {
     return (
         <div>
-            <img
-                src={image}
-                alt={`${first_name} ${last_name}`}
-                onClick={onClick}
-            />
+            <img src={image} alt={`${first} ${last}`} onClick={onClick} />
         </div>
     );
 }

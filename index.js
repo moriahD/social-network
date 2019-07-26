@@ -88,7 +88,6 @@ app.post("/login", function(req, res) {
             }
         })
         .then(result => {
-            console.log("req.body.password", result);
             bc.checkPassword(req.body.pass, result.rows[0].password)
                 .then(results => {
                     if (!results) {
@@ -113,8 +112,7 @@ app.post("/uploader", uploader.single("file"), s3.upload, (req, res) => {
         // console.log("req.session.userId", userId);
 
         db.updateUserAvatar(url, req.session.userId)
-            .then(result => {
-                console.log("result", result);
+            .then(() => {
                 return res.json({ image: url });
             })
             .catch(err => {
@@ -131,6 +129,7 @@ app.get("/user", async function(req, res) {
         console.log("req.session.userId: ", req.session.userId);
         const user = await db.getUserById(req.session.userId);
         user.image = user.rows[0].image;
+        console.log(user.rows[0].first_name);
         if (!user.image) {
             user.image = "/images/default.png";
         }
@@ -139,7 +138,16 @@ app.get("/user", async function(req, res) {
         console.log("Error Message in /user router: ", err);
     }
 });
-
+app.post("/bio", async function(req, res) {
+    const bio = req.body.bio;
+    try {
+        await db.updateBio(bio, req.session.userId);
+        console.log("bio.", bio);
+        res.json({ bio });
+    } catch (err) {
+        console.log("Error Message in /bio router: ", err);
+    }
+});
 app.get("/welcome", function(req, res) {
     if (req.session.userId) {
         res.redirect("/");

@@ -84,15 +84,13 @@ button:hover {
     height: 30px;
     background: #f5f5f5;
     position: fixed;
-    width: 100%;
     opacity: 0.95;
     box-shadow: 9px 2px 10px #000;
     top: 0;
     left: 0;
+    right: 0;
     padding: 10px;
-}
-.welcometxt {
-    padding: 9px 0 0 12px;
+    justify-content: space-between;
 }
 .profileWrap img {
     height: 30px;
@@ -158,4 +156,24 @@ button:hover {
 .custom-file-input:active::before {
     background: #3fc1c9;
     color: #f5f5f5;
+}
+.profileBox {
+    padding: 70px 20px 20px 20px;
+    display: inline-flex;
+    width: 96%;
+}
+.profileImg {
+    width: 40%;
+    padding-right: 20px;
+}
+.profileImg img {
+    width: 100%;
+    height: auto;
+}
+.bioeditorBox {
+    color: #f5f5f5;
+    width: 50%;
+}
+.bioTextarea {
+    width: 100%;
 }

@@ -28,3 +28,6 @@ exports.getUserById = function getUserById(id) {
 exports.updateUserAvatar = function updateUserAvatar(image, id) {
     return db.query(`UPDATE users SET image = $1  WHERE id = $2`, [image, id]);
 };
+exports.updateBio = function updateBio(bio, id) {
+    return db.query(`UPDATE users SET bio = $1  WHERE id = $2`, [bio, id]);
+};

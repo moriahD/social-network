@@ -1,6 +1,8 @@
 import React from "react";
 import Uploader from "./uploader";
 import ProfilePic from "./profilepic";
+import Profile from "./profile";
+import BioEditor from "./bioeditor";
 import axios from "./axios";
 //use class when you need lifecycle...something?
 
@@ -8,13 +10,14 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploaderIsVisible: false
+            uploaderIsVisible: false,
+            showBioEditor: false
         };
     }
     async componentDidMount() {
         const { data } = await axios.get("/user");
-        console.log(data.user.rows[0]);
-        this.setState(data.user);
+        console.log("data.user.rows[0]: ", data.user.rows[0]);
+        this.setState(data.user.rows[0]);
     }
     render() {
         if (!this.state.image) {
@@ -28,7 +31,7 @@ export default class App extends React.Component {
                         src="/images/logo.png"
                         alt="logo"
                     />
-                    <p className="welcometxt">Welcome to blablabla</p>
+
                     <div className="profileWrap">
                         <ProfilePic
                             image={this.state.image}
@@ -36,11 +39,32 @@ export default class App extends React.Component {
                             last={this.state.last_name}
                             onClick={() =>
                                 this.setState({ uploaderIsVisible: true })
-                            } //it has to be arrow function for 'this' to stay within scope.
+                            }
                         />
                     </div>
                 </div>
-
+                <Profile
+                    first={this.state.first_name}
+                    last={this.state.last_name}
+                    profilePic={
+                        <ProfilePic
+                            id={this.state.id}
+                            first={this.state.first_name}
+                            last={this.state.last_name}
+                            image={this.state.image}
+                            onClick={this.showUploader}
+                        />
+                    }
+                    bioEditor={
+                        <BioEditor
+                            onClick={() =>
+                                this.setState({ showBioEditor: true })
+                            }
+                            bio={this.state.bio}
+                            setBio={bio => this.setState({ bio: bio })}
+                        />
+                    }
+                />
                 {this.state.uploaderIsVisible && (
                     <Uploader
                         onClick={() =>
