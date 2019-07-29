@@ -4,7 +4,7 @@ import ProfilePic from "./profilepic";
 import Profile from "./profile";
 import BioEditor from "./bioeditor";
 import axios from "./axios";
-//use class when you need lifecycle...something?
+import { Route, BrowserRouter, Link } from "react-router-dom";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -17,6 +17,7 @@ export default class App extends React.Component {
     async componentDidMount() {
         const { data } = await axios.get("/user");
         console.log("data.user.rows[0]: ", data.user.rows[0]);
+        console.log(this.state.bio);
         this.setState(data.user.rows[0]);
     }
     render() {
@@ -43,9 +44,32 @@ export default class App extends React.Component {
                         />
                     </div>
                 </div>
+                <BrowserRouter>
+                    <div>
+                        <Route
+                            exact
+                            path="/"
+                            render={props => {
+                                return (
+                                    <ProfilePic
+                                        image={this.state.image}
+                                        first={this.state.first_name}
+                                        last={this.state.last_name}
+                                        onClick={() =>
+                                            this.setState({
+                                                uploaderIsVisible: true
+                                            })
+                                        }
+                                    />
+                                );
+                            }}
+                        />
+                    </div>
+                </BrowserRouter>
                 <Profile
                     first={this.state.first_name}
                     last={this.state.last_name}
+                    bio={this.state.bio}
                     profilePic={
                         <ProfilePic
                             id={this.state.id}

@@ -143,7 +143,7 @@ app.post("/bio", async function(req, res) {
     try {
         await db.updateBio(bio, req.session.userId);
         console.log("bio.", bio);
-        res.json({ bio });
+        return res.json({ bio });
     } catch (err) {
         console.log("Error Message in /bio router: ", err);
     }

@@ -45,6 +45,7 @@ export default class BioEditor extends React.Component {
                     </div>
                 )}
                 {this.props.bio}
+
                 <button onClick={() => this.setState({ editing: true })}>
                     Edit your bio
                 </button>
