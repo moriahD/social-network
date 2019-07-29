@@ -25,6 +25,7 @@ export default class App extends React.Component {
         if (!this.state.image) {
             return <div>Loading...</div>;
         }
+
         return (
             <div className="profileWrap">
                 <div className="navBox">
