@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./axios";
-// import FriendButton from "./friendButton";
+import FriendButton from "./friendButton";
 export default class OtherProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -22,7 +22,9 @@ export default class OtherProfile extends React.Component {
             <div className="profileBox">
                 <div className="profileImg">
                     <img src={this.state.image} />
+                    <FriendButton otherProfileId={this.props.match.params.id} />
                 </div>
+
                 <div className="bioeditorBox">
                     <h1>
                         {this.state.first_name} {this.state.last_name}
@@ -35,4 +37,3 @@ export default class OtherProfile extends React.Component {
     }
 }
 //
-// <FriendButton otherProfileId={this.props.match.params.id} />

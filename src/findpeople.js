@@ -42,7 +42,7 @@ export default function FindPeople() {
             />
             {users &&
                 users.map(user => (
-                    <div key={user.id}>
+                    <li key={user.id}>
                         <div
                             className="list"
                             style={{
@@ -56,7 +56,7 @@ export default function FindPeople() {
                         <h2>
                             {user.first_name} {user.last_name}
                         </h2>
-                    </div>
+                    </li>
                 ))}
         </div>
     );

@@ -42,15 +42,19 @@ exports.getMatchingUsers = function getMatchingUsers(val) {
     );
 };
 
-exports.getFriendship = function getFriendship(sender_id, receiver_id) {
+exports.getFriendshipInfo = function getFriendshipInfo(sender_id, receiver_id) {
     return db.query(
         `SELECT * FROM friendships WHERE (sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id = $1)`,
         [sender_id, receiver_id]
     );
 };
-
 //another query for inserting BOOLEAN when frienship is requested
+exports.requestFriendship = function requestFriendship(accepted) {
+    return db.query(`UPDATE friendships SET accepted = $1`, [accepted]);
+};
 
 // query for when friendship is accepted
+exports.acceptFriendship = function acceptFriendship(receiver_id) {};
 
 // query for when friendship is canceled
+exports.cancelFriendship = function cancelFriendship() {};

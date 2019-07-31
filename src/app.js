@@ -29,31 +29,33 @@ export default class App extends React.Component {
 
         return (
             <div className="profileWrap">
-                <div className="navBox">
-                    <a href="/">
-                        <img
-                            className="logoSmall"
-                            src="/images/logo.png"
-                            alt="logo"
-                        />
-                    </a>
-
-                    <div className="profileWrap">
-                        <div className="linkNav">
-                            <a href="/findpeople">Find people</a>
-                        </div>
-                        <ProfilePic
-                            image={this.state.image}
-                            first={this.state.first_name}
-                            last={this.state.last_name}
-                            onClick={() =>
-                                this.setState({ uploaderIsVisible: true })
-                            }
-                        />
-                    </div>
-                </div>
                 <BrowserRouter>
                     <div>
+                        <div className="navBox">
+                            <Link to="/">
+                                <img
+                                    className="logoSmall"
+                                    src="/images/logo.png"
+                                    alt="logo"
+                                />
+                            </Link>
+
+                            <div className="profileWrap">
+                                <div className="linkNav">
+                                    <Link to="/findpeople">Find People</Link>
+                                </div>
+                                <ProfilePic
+                                    image={this.state.image}
+                                    first={this.state.first_name}
+                                    last={this.state.last_name}
+                                    onClick={() =>
+                                        this.setState({
+                                            uploaderIsVisible: true
+                                        })
+                                    }
+                                />
+                            </div>
+                        </div>
                         <Route
                             exact
                             path="/"
