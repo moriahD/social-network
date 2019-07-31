@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./axios";
-
+// import FriendButton from "./friendButton";
 export default class OtherProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -8,12 +8,14 @@ export default class OtherProfile extends React.Component {
     }
     async componentDidMount() {
         const id = this.props.match.params.id;
-
+        console.log("this.props: ", this.props);
         const { data } = await axios.get(`/user/${id}.json`);
+        console.log("data: ", data);
         if (data.sameUser) {
             this.props.history.push("/");
         }
         this.setState(data.user.rows[0]);
+        console.log("data.user: ", data.user.rows[0]);
     }
     render() {
         return (
@@ -32,3 +34,5 @@ export default class OtherProfile extends React.Component {
         );
     }
 }
+//
+// <FriendButton otherProfileId={this.props.match.params.id} />

@@ -31,3 +31,26 @@ exports.updateUserAvatar = function updateUserAvatar(image, id) {
 exports.updateBio = function updateBio(bio, id) {
     return db.query(`UPDATE users SET bio = $1  WHERE id = $2`, [bio, id]);
 };
+exports.mostRecentUsers = function mostRecentUsers() {
+    return db.query(`SELECT * FROM users ORDER BY id DESC LIMIT 3`);
+};
+
+exports.getMatchingUsers = function getMatchingUsers(val) {
+    return db.query(
+        `SELECT first_name, last_name, image FROM users WHERE first_name ILIKE $1 OR last_name ILIKE $1;`,
+        [val + "%"]
+    );
+};
+
+exports.getFriendship = function getFriendship(sender_id, receiver_id) {
+    return db.query(
+        `SELECT * FROM friendships WHERE (sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id = $1)`,
+        [sender_id, receiver_id]
+    );
+};
+
+//another query for inserting BOOLEAN when frienship is requested
+
+// query for when friendship is accepted
+
+// query for when friendship is canceled

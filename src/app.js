@@ -4,6 +4,7 @@ import ProfilePic from "./profilepic";
 import Profile from "./profile";
 import BioEditor from "./bioeditor";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 import axios from "./axios";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 
@@ -29,13 +30,18 @@ export default class App extends React.Component {
         return (
             <div className="profileWrap">
                 <div className="navBox">
-                    <img
-                        className="logoSmall"
-                        src="/images/logo.png"
-                        alt="logo"
-                    />
+                    <a href="/">
+                        <img
+                            className="logoSmall"
+                            src="/images/logo.png"
+                            alt="logo"
+                        />
+                    </a>
 
                     <div className="profileWrap">
+                        <div className="linkNav">
+                            <a href="/findpeople">Find people</a>
+                        </div>
                         <ProfilePic
                             image={this.state.image}
                             first={this.state.first_name}
@@ -84,6 +90,7 @@ export default class App extends React.Component {
                             }}
                         />
                         <Route path="/user/:id" component={OtherProfile} />
+                        <Route path="/findpeople" component={FindPeople} />
                     </div>
                 </BrowserRouter>
 
@@ -101,5 +108,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-// {myArray.length && <Something/>}->is myArray is 0, it doesn't show anything, if its more than 0, it shows Something

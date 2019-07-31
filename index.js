@@ -141,16 +141,42 @@ app.get("/user", async function(req, res) {
 app.get("/user/:id.json", async function(req, res) {
     try {
         console.log("req.session.userId: ", req.session.userId);
-        console.log("req.params: ", req.params);
+
         const user = await db.getUserById(req.params.id);
+
         user.image = user.rows[0].image;
-        console.log(user.rows[0].first_name);
+        if (req.params.id == req.session.userId) {
+            res.json({ sameUser: true });
+        }
+        console.log("req.params.id:", req.params.id);
+        // if (!req.params.id) {
+        //     res.json({ invalidUser: true });
+        // }
         if (!user.image) {
             user.image = "/images/default.png";
         }
         res.json({ user });
     } catch (err) {
         console.log("Error Message in /otheruser router: ", err);
+    }
+});
+app.get("/userslist.json", (req, res) => {
+    db.mostRecentUsers()
+        .then(data => {
+            console.log("mostRecentUsers: ", data.rows);
+            return res.json(data.rows);
+        })
+        .catch(err => {
+            console.log("Error getting most recent user list: ", err);
+        });
+});
+app.get("/userslist/:val.json", async function(req, res) {
+    try {
+        const usersList = await db.getMatchingUsers(req.params.val);
+        console.log(req.params.val);
+        res.json(usersList.rows);
+    } catch (err) {
+        console.log("Error getting getMatchingUsers: ", err);
     }
 });
 app.post("/bio", async function(req, res) {

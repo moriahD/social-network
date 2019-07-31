@@ -52,3 +52,17 @@ export default class Login extends React.Component {
         );
     }
 }
+
+// function Login(){
+//     const [error, setError] = useState(false);
+//     const [email, setEmail] = useState();
+//     const [pass, setPass] = useState();
+//
+//     function submit(){
+//         axios.post('/login',{
+//             email: email,
+//             pass: pass
+//         })
+//     }
+//
+// }
