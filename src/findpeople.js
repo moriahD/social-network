@@ -4,19 +4,15 @@ export default function FindPeople() {
     const [users, setUsers] = useState();
     const [val, setVal] = useState();
 
-    useEffect(() => {
-        if (val == null) {
-            (async () => {
-                const list = await axios.get("/userslist.json");
-                setUsers(list.data);
-                console.log(list.data);
-            })();
-        }
-    }, []);
-
     useEffect(
         () => {
-            if (val !== undefined && val !== "") {
+            if (!val) {
+                (async () => {
+                    const list = await axios.get("/userslist.json");
+                    setUsers(list.data);
+                    console.log(list.data);
+                })();
+            } else {
                 (async () => {
                     const list = await axios.get(`/userslist/${val}.json`);
                     console.log(`"${val}" has been rendered!`);
@@ -27,6 +23,7 @@ export default function FindPeople() {
         },
         [val]
     );
+
     return (
         <div className="findPeople" style={{ padding: "70px 20px 20px 20px" }}>
             {!val && (
