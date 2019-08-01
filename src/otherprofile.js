@@ -8,6 +8,7 @@ export default class OtherProfile extends React.Component {
     }
     async componentDidMount() {
         const id = this.props.match.params.id;
+
         console.log("this.props: ", this.props);
         const { data } = await axios.get(`/user/${id}.json`);
         console.log("data: ", data);
@@ -22,7 +23,10 @@ export default class OtherProfile extends React.Component {
             <div className="profileBox">
                 <div className="profileImg">
                     <img src={this.state.image} />
-                    <FriendButton otherProfileId={this.props.match.params.id} />
+                    <FriendButton
+                        otherProfileId={this.props.match.params.id}
+                        otherProfileName={this.state.first_name}
+                    />
                 </div>
 
                 <div className="bioeditorBox">

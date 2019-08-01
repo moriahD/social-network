@@ -179,6 +179,26 @@ app.get("/userslist/:val.json", async function(req, res) {
         console.log("Error getting getMatchingUsers: ", err);
     }
 });
+app.get("/friendshipList/:id.json", async function(req, res) {
+    try {
+        const getFriendshipInfo = await db.getFriendshipInfo(
+            req.session.userId,
+            req.params.id
+        );
+        if (getFriendshipInfo.rows.length == 0) {
+            res.json({ button: "Send Friend Request to" });
+        } else if (getFriendshipInfo.rows[0].accepted) {
+            res.json({ button: "Unfriend" });
+        } else if (getFriendshipInfo.rows[0].sender_id == req.session.userId) {
+            res.json({ button: "Cancel Friend Request to" });
+        } else {
+            res.json({ button: "Accept Friend Request from" });
+        }
+        console.log("getFriendshipInfo:", getFriendshipInfo);
+    } catch (err) {
+        console.log("Error getting frienship info: ", err);
+    }
+});
 app.post("/bio", async function(req, res) {
     const bio = req.body.bio;
     try {
