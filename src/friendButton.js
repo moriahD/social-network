@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 export default function FriendButton(props) {
     const [button, setButton] = useState();
-    const [val, setVal] = useState();
     const id = props.otherProfileId;
     const name = props.otherProfileName;
     console.log(name);
@@ -14,9 +13,19 @@ export default function FriendButton(props) {
             console.log("buttonText:", buttonText.data.button);
         })();
     }, []);
-
+    async function submit() {
+        // console.log("clicked button");
+        try {
+            const request = await axios.post(`/friendshipList/${id}.json`, {
+                button
+            });
+            setButton(request.data.button);
+        } catch (err) {
+            console.log("err in POST /frienship", err);
+        }
+    }
     return (
-        <button onClick={e => setVal(e.target.value)} defaultValue={val}>
+        <button onClick={submit}>
             {button} {name}
         </button>
     );

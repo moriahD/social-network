@@ -49,12 +49,25 @@ exports.getFriendshipInfo = function getFriendshipInfo(sender_id, receiver_id) {
     );
 };
 //another query for inserting BOOLEAN when frienship is requested
-exports.requestFriendship = function requestFriendship(accepted) {
-    return db.query(`UPDATE friendships SET accepted = $1`, [accepted]);
+exports.requestFriendship = function requestFriendship(sender_id, receiver_id) {
+    return db.query(
+        `INSERT INTO friendships (sender_id, receiver_id) VALUES ($1, $2) RETURNING *`,
+        [sender_id, receiver_id]
+    );
 };
 
 // query for when friendship is accepted
-exports.acceptFriendship = function acceptFriendship(receiver_id) {};
+exports.acceptFriendship = function acceptFriendship(receiver_id, sender_id) {
+    return db.query(
+        `UPDATE friendships SET accepted = TRUE  WHERE (receiver_id=$1 AND sender_id=$2 AND accepted = FALSE) RETURNING *`,
+        [receiver_id, sender_id]
+    );
+};
 
-// query for when friendship is canceled
-exports.cancelFriendship = function cancelFriendship() {};
+// // query for when friendship is canceled
+exports.cancelRequest = function cancelRequest(sender_id, receiver_id) {
+    return db.query(
+        `DELETE FROM friendships WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1);`,
+        [sender_id, receiver_id]
+    );
+};

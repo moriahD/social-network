@@ -199,6 +199,35 @@ app.get("/friendshipList/:id.json", async function(req, res) {
         console.log("Error getting frienship info: ", err);
     }
 });
+app.post("/friendshipList/:id.json", async function(req, res) {
+    try {
+        console.log("req.body.button:", req.body.button);
+        if (req.body.button == "Send Friend Request to") {
+            const result = await db.requestFriendship(
+                req.session.userId,
+                req.params.id
+            );
+            res.json({ button: "Cancel Friend Request to" });
+        } else if (
+            req.body.button == "Cancel Friend Request to" ||
+            req.body.button == "Unfriend"
+        ) {
+            const result = await db.cancelRequest(
+                req.session.userId,
+                req.params.id
+            );
+            res.json({ button: "Send Friend Request to" });
+        } else if (req.body.button == "Accept Friend Request from") {
+            const result = await db.acceptFriendship(
+                req.session.userId,
+                req.params.id
+            );
+            res.json({ button: "Unfriend" });
+        }
+    } catch (err) {
+        console.log("Error posting frienship info: ", err);
+    }
+});
 app.post("/bio", async function(req, res) {
     const bio = req.body.bio;
     try {
