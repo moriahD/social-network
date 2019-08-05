@@ -27,3 +27,14 @@ export async function endFriendship(id) {
         console.log("err for endFriendship ", err);
     }
 }
+
+export async function acceptFriendship(id) {
+    const { data } = await axios.post(`/friendshipList/${id}.json`, {
+        button: "Accept Friend Request from"
+    });
+    console.log("data", data);
+    return {
+        type: "ACCEPT",
+        id
+    };
+}

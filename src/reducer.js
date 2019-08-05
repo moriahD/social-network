@@ -16,6 +16,19 @@ export default function(state = {}, action) {
                 };
             })
         };
+    } else if (action.type == "ACCEPT") {
+        state = {
+            ...state,
+            users: state.users.map(user => {
+                if (user.id != action.id) {
+                    return user;
+                }
+                return {
+                    ...user,
+                    accepted: true
+                };
+            })
+        };
     }
     return state;
 }

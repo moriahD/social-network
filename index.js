@@ -202,11 +202,12 @@ app.get("/friendshipList/:id.json", async function(req, res) {
 app.post("/friendshipList/:id.json", async function(req, res) {
     try {
         console.log("req.body.button:", req.body.button);
-        const result = await db.requestFriendship(
-            req.session.userId,
-            req.params.id
-        );
+
         if (req.body.button == "Send Friend Request to") {
+            const result = await db.requestFriendship(
+                req.session.userId,
+                req.params.id
+            );
             res.json({ button: "Cancel Friend Request to" });
         } else if (
             req.body.button == "Cancel Friend Request to" ||
@@ -268,19 +269,3 @@ app.get("*", function(req, res) {
 app.listen(8080, function() {
     console.log("I'm listening.");
 });
-
-// app.post("/register", function(req, res) {
-//     bc.hashPassword(req.body.pass).then(hashedpw => {
-//         return db
-//             .addUser(req.body.first, req.body.last, req.body.email, hashedpw)
-//             .then(results => {
-//                 console.log(results);
-//                 req.session.userId = results.rows[0].id;
-//                 res.json({ success: true });
-//             })
-//             .catch(err => {
-//                 console.log("err in registering: ", err);
-//             });
-//     });
-//     // db.addUser(req.body.first, req.body.last, req.body.email, req.body.pass);
-// });

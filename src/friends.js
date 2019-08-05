@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { friendslist, endFriendship } from "./actions";
+import { friendslist, endFriendship, acceptFriendship } from "./actions";
 
 export default function Friends() {
     const dispatch = useDispatch();
@@ -9,6 +9,10 @@ export default function Friends() {
     const myfriends = useSelector(
         state =>
             state.users && state.users.filter(user => user.accepted == true)
+    );
+    const wannabes = useSelector(
+        state =>
+            state.users && state.users.filter(user => user.accepted == false)
     );
     console.log("friends: ", myfriends);
     useEffect(() => {
@@ -33,19 +37,35 @@ export default function Friends() {
                 ))}
         </div>
     );
+    const wannabesfriends = (
+        <div>
+            {wannabes &&
+                wannabes.map(user => (
+                    <div className="friendsbox" key="{user.id}">
+                        <img src={user.image} />
+                        <h1>
+                            {user.first_name} {user.last_name}
+                        </h1>
+                        <button
+                            onClick={e => dispatch(acceptFriendship(user.id))}
+                        >
+                            Accept Friendship
+                        </button>
+                    </div>
+                ))}
+        </div>
+    );
     return (
         <div className="friendslist" style={{ padding: "70px 20px 20px 20px" }}>
             {!myfriends.length && <div>You have no friends!</div>}
-            <h2>Friends List</h2>
+            <p>These people are currently your friends</p>
             {!!myfriends.length && currentfriends}
+
+            <p>These people want to be your friends</p>
+            {!wannabes.length && (
+                <div>You don&apos;t have any friendship request</div>
+            )}
+            {!!wannabes.length && wannabesfriends}
         </div>
     );
 }
-//
-//
-// const wannabes = useSelector(
-//     state => state.friends && state.friends.filter(i => i.accepted == false)
-// );
-// const friends = useSelector(
-//     state => state.friends && state.friends.filter(i => i.accepted == true)
-// );

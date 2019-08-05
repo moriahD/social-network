@@ -59,7 +59,7 @@ exports.requestFriendship = function requestFriendship(sender_id, receiver_id) {
 // query for when friendship is accepted
 exports.acceptFriendship = function acceptFriendship(receiver_id, sender_id) {
     return db.query(
-        `UPDATE friendships SET accepted = TRUE  WHERE (receiver_id=$1 AND sender_id=$2 AND accepted = FALSE) RETURNING *`,
+        `UPDATE friendships SET accepted = TRUE WHERE (receiver_id=$1 AND sender_id=$2) RETURNING *`,
         [receiver_id, sender_id]
     );
 };
