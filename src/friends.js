@@ -24,13 +24,15 @@ export default function Friends() {
     const currentfriends = (
         <div>
             {myfriends &&
-                myfriends.map(user => (
-                    <div className="friendsbox" key="{user.id}">
-                        <img src={user.image} />
+                myfriends.map(friend => (
+                    <div className="friendsbox" key="{friend.id}">
+                        <img src={friend.image} />
                         <h1>
-                            {user.first_name} {user.last_name}
+                            {friend.first_name} {friend.last_name}
                         </h1>
-                        <button onClick={e => dispatch(endFriendship(user.id))}>
+                        <button
+                            onClick={e => dispatch(endFriendship(friend.id))}
+                        >
                             End Friendship
                         </button>
                     </div>
@@ -40,14 +42,16 @@ export default function Friends() {
     const wannabesfriends = (
         <div>
             {wannabes &&
-                wannabes.map(user => (
-                    <div className="friendsbox" key="{user.id}">
-                        <img src={user.image} />
+                wannabes.map(wannabe => (
+                    <div className="friendsbox" key="{wannabe.id}">
+                        <img src={wannabe.image} />
                         <h1>
-                            {user.first_name} {user.last_name}
+                            {wannabe.first_name} {wannabe.last_name}
                         </h1>
                         <button
-                            onClick={e => dispatch(acceptFriendship(user.id))}
+                            onClick={e =>
+                                dispatch(acceptFriendship(wannabe.id))
+                            }
                         >
                             Accept Friendship
                         </button>

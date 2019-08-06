@@ -10,6 +10,7 @@ import reduxPromise from "redux-promise";
 import reducer from "./reducer";
 
 import { composeWithDevTools } from "redux-devtools-extension";
+import { init } from "./socket";
 let elem;
 const store = createStore(
     reducer,
@@ -20,8 +21,7 @@ if (location.pathname == "/welcome") {
     //they are logged out
     elem = <Welcome />;
 } else {
-    //they are logged in
-    // elem = <img className="logoSmall" src="/images/logo.png" />;
+    init(store);
     elem = (
         <Provider store={store}>
             <App />;
