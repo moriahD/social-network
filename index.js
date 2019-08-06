@@ -1,15 +1,27 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
+
 const compression = require("compression");
 const db = require("./utils/db");
 const bc = require("./utils/bc");
-var cookieSession = require("cookie-session");
 const csurf = require("csurf");
 app.use(require("body-parser").json());
 
 app.use(express.static("./public"));
 app.set("view engine", "handlebars");
 app.use(compression());
+const cookieSession = require("cookie-session");
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 app.use(
     cookieSession({
         secret: "I'm always angry.",
@@ -22,6 +34,7 @@ app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
+
 const s3 = require("./s3");
 const config = require("./config");
 
@@ -256,6 +269,17 @@ app.get("/welcome", function(req, res) {
         res.sendFile(__dirname + "/index.html");
     }
 });
+// server side socket code
+io.on("connection", function(socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    let userId = socket.request.session.userId;
+
+    /* ... */
+});
 
 // --------------- DO NOT DELETE THIS ------------------ //
 app.get("*", function(req, res) {
@@ -266,6 +290,6 @@ app.get("*", function(req, res) {
     }
 });
 // --------------- DO NOT DELETE THIS ------------------ //
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("I'm listening.");
 });
