@@ -269,6 +269,9 @@ app.get("/welcome", function(req, res) {
         res.sendFile(__dirname + "/index.html");
     }
 });
+// app.get("/chat.json", function(req, res) {
+//     console.log("chat page");
+// });
 // server side socket code
 io.on("connection", function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
@@ -278,7 +281,27 @@ io.on("connection", function(socket) {
 
     let userId = socket.request.session.userId;
 
-    /* ... */
+    db.getLastTenMessages()
+        .then(data => {
+            console.log("getLastTenMessages data:", data);
+            socket.emit("chatMessages", data.rows);
+        })
+        .catch(err => console.log("err in getting last 10 messages:", err));
+
+    // //part 2 is dealing with a new chat message.
+    socket.on("newMessage", function(newMessage) {
+        console.log("This is the new chat message", newMessage);
+        db.saveMessages(userId, newMessage)
+            .then(console.log("message saved"))
+            .catch();
+        //figure out who sent message.
+        //then make a DB query to get info about that user.
+        // THEN-> create a new message object that matches the objects in the last 10 chat messages.
+
+        //  now emit that there is a new chat and pass the object.
+
+        //add this chat message to our Database.
+    });
 });
 
 // --------------- DO NOT DELETE THIS ------------------ //

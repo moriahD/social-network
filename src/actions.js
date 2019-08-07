@@ -38,3 +38,16 @@ export async function acceptFriendship(id) {
         id
     };
 }
+export async function chatMessages(msgs) {
+    console.log("msgs:", msgs);
+    return {
+        type: "CHAT_MESSAGES",
+        msgs
+    };
+}
+export async function chatMessage(msg) {
+    return {
+        type: "CHAT_MESSAGE",
+        msg
+    };
+}

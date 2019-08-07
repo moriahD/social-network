@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { friendslist, endFriendship, acceptFriendship } from "./actions";
-
+import { Link } from "react-router-dom";
 export default function Friends() {
     const dispatch = useDispatch();
 
@@ -26,10 +26,12 @@ export default function Friends() {
             {myfriends &&
                 myfriends.map(friend => (
                     <div className="friendsbox" key="{friend.id}">
-                        <img src={friend.image} />
-                        <h1>
-                            {friend.first_name} {friend.last_name}
-                        </h1>
+                        <Link to={"/user/" + friend.id}>
+                            <img src={friend.image} />
+                            <h1>
+                                {friend.first_name} {friend.last_name}
+                            </h1>
+                        </Link>
                         <button
                             onClick={e => dispatch(endFriendship(friend.id))}
                         >
@@ -44,10 +46,12 @@ export default function Friends() {
             {wannabes &&
                 wannabes.map(wannabe => (
                     <div className="friendsbox" key="{wannabe.id}">
-                        <img src={wannabe.image} />
-                        <h1>
-                            {wannabe.first_name} {wannabe.last_name}
-                        </h1>
+                        <Link to={"/user/" + wannabe.id}>
+                            <img src={wannabe.image} />
+                            <h1>
+                                {wannabe.first_name} {wannabe.last_name}
+                            </h1>
+                        </Link>
                         <button
                             onClick={e =>
                                 dispatch(acceptFriendship(wannabe.id))

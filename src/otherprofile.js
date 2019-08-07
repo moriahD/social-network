@@ -7,7 +7,7 @@ export default class OtherProfile extends React.Component {
         this.state = {};
     }
     async componentDidMount() {
-        const id = this.props.match.params.id;
+        const { id } = this.props.match.params;
 
         console.log("this.props: ", this.props);
         const { data } = await axios.get(`/user/${id}.json`);

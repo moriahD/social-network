@@ -208,3 +208,16 @@ button:hover {
 .friendsbox {
     display: flex;
 }
+.chat-container {
+    background: white;
+    padding: 1%;
+    overflow-y: scroll;
+    width: 98%;
+}
+.chat-container span {
+    color: #f76262;
+}
+.chatbox textarea {
+    width: 98%;
+    padding: 1%;
+}

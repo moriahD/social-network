@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
+
 export default function FindPeople() {
     const [users, setUsers] = useState();
     const [val, setVal] = useState();
@@ -10,14 +12,13 @@ export default function FindPeople() {
                 (async () => {
                     const list = await axios.get("/userslist.json");
                     setUsers(list.data);
-                    console.log(list.data);
                 })();
             } else {
                 (async () => {
                     const list = await axios.get(`/userslist/${val}.json`);
                     console.log(`"${val}" has been rendered!`);
                     setUsers(list.data);
-                    console.log(list.data);
+                    console.log("list.data: ", list.data);
                 })();
             }
         },
@@ -43,19 +44,21 @@ export default function FindPeople() {
             {users &&
                 users.map(user => (
                     <li key={user.id}>
-                        <div
-                            className="list"
-                            style={{
-                                width: "150px",
-                                height: "150px",
-                                overflow: "hidden"
-                            }}
-                        >
-                            <img src={user.image} />
-                        </div>
-                        <h2>
-                            {user.first_name} {user.last_name}
-                        </h2>
+                        <Link to={`/user/${user.id}`}>
+                            <div
+                                className="list"
+                                style={{
+                                    width: "150px",
+                                    height: "150px",
+                                    overflow: "hidden"
+                                }}
+                            >
+                                <img src={user.image} />
+                            </div>
+                            <h2>
+                                {user.first_name} {user.last_name}
+                            </h2>
+                        </Link>
                     </li>
                 ))}
         </div>

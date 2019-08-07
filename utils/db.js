@@ -37,7 +37,7 @@ exports.mostRecentUsers = function mostRecentUsers() {
 
 exports.getMatchingUsers = function getMatchingUsers(val) {
     return db.query(
-        `SELECT first_name, last_name, image FROM users WHERE first_name ILIKE $1 OR last_name ILIKE $1;`,
+        `SELECT id, first_name, last_name, image FROM users WHERE first_name ILIKE $1 OR last_name ILIKE $1;`,
         [val + "%"]
     );
 };
@@ -83,5 +83,18 @@ exports.getfriends = function getfriends(userId) {
         OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
     `,
         [userId]
+    );
+};
+
+exports.getLastTenMessages = function getLastTenMessages() {
+    return db.query(`
+        SELECT * FROM chats ORDER BY id DESC LIMIT 10
+        `);
+};
+exports.saveMessages = function saveMessages(sender_id, message) {
+    return db.query(
+        `
+        INSERT INTO chats (sender_id, message) VALUES ($1, $2)`,
+        [sender_id, message]
     );
 };
