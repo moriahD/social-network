@@ -280,28 +280,29 @@ io.on("connection", function(socket) {
     }
 
     let userId = socket.request.session.userId;
+    // //part 2 is dealing with a new chat message.
+    socket.on("newMessage", newMessage => {
+        console.log("This is the new chat message", newMessage);
+        db.saveMessages(socket.request.session.userId, newMessage)
+            .then(result => {
+                console.log("result:", result);
+                return db.getUserById(userId).then(data => {
+                    console.log("new chat message data:", data.rows[0]);
 
+                    data.rows[0].sender_id = data.rows[0].id;
+                    data.rows[0].message = result.rows[0].message;
+                    data.rows[0].created_at = result.rows[0].created_at;
+                    io.emit("chatMessage", data.rows[0]);
+                });
+            })
+            .catch(err => console.log("err in saving new message:", err));
+    });
     db.getLastTenMessages()
         .then(data => {
-            console.log("getLastTenMessages data:", data);
-            socket.emit("chatMessages", data.rows);
+            // console.log("getLastTenMessages data:", data);
+            socket.emit("chatMessages", data.rows.reverse());
         })
         .catch(err => console.log("err in getting last 10 messages:", err));
-
-    // //part 2 is dealing with a new chat message.
-    socket.on("newMessage", function(newMessage) {
-        console.log("This is the new chat message", newMessage);
-        db.saveMessages(userId, newMessage)
-            .then(console.log("message saved"))
-            .catch();
-        //figure out who sent message.
-        //then make a DB query to get info about that user.
-        // THEN-> create a new message object that matches the objects in the last 10 chat messages.
-
-        //  now emit that there is a new chat and pass the object.
-
-        //add this chat message to our Database.
-    });
 });
 
 // --------------- DO NOT DELETE THIS ------------------ //

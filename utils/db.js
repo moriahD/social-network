@@ -21,7 +21,7 @@ exports.getUserId = function(email) {
 
 exports.getUserById = function getUserById(id) {
     return db.query(
-        `SELECT image, first_name, last_name, bio FROM users WHERE id = $1`,
+        `SELECT id, image, first_name, last_name, bio FROM users WHERE id = $1`,
         [id]
     );
 };
@@ -88,13 +88,16 @@ exports.getfriends = function getfriends(userId) {
 
 exports.getLastTenMessages = function getLastTenMessages() {
     return db.query(`
-        SELECT * FROM chats ORDER BY id DESC LIMIT 10
+        SELECT users.first_name, users.last_name, users.image, users.id , chats.message, chats.created_at, to_char( chats.created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at
+FROM users
+right JOIN chats
+ON chats.sender_id = users.id  ORDER BY chats.created_at DESC LIMIT 10;
         `);
 };
 exports.saveMessages = function saveMessages(sender_id, message) {
     return db.query(
         `
-        INSERT INTO chats (sender_id, message) VALUES ($1, $2)`,
+        INSERT INTO chats (sender_id, message) VALUES ($1, $2) RETURNING*, to_char( created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at`,
         [sender_id, message]
     );
 };

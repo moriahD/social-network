@@ -5,6 +5,7 @@ import axios from "./axios";
 
 export default function Chat() {
     const chatMessages = useSelector(state => state && state.msgs);
+
     console.log("here are my last 10 messages: ", chatMessages);
 
     const elemRef = useRef();
@@ -35,15 +36,23 @@ export default function Chat() {
                 {chatMessages &&
                     chatMessages.map(msgs => (
                         <div key={msgs.id}>
-                            <p>
-                                <span>first last name: </span>
-                                {msgs.message}
-                            </p>
+                            <div className="chatInner">
+                                <div className="chatInner2">
+                                    <img src={msgs.image} />
+                                    <div className="whatever">
+                                        <span>{msgs.first_name}</span> :{" "}
+                                        {msgs.message}
+                                        <span className="chatdate">
+                                            {msgs.created_at}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))}
             </div>
             <textarea
-                placeholder="Add your message here"
+                placeholder="Add your message here. (max 1000 characters)"
                 onKeyDown={keyCheck}
             />
         </div>

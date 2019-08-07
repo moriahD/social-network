@@ -37,7 +37,7 @@ export default function(state = {}, action) {
     } else if (action.type == "CHAT_MESSAGE") {
         state = {
             ...state,
-            msg: action.msg
+            msgs: [...state.msgs, action.msg]
         };
     }
     return state;

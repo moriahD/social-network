@@ -213,11 +213,38 @@ button:hover {
     padding: 1%;
     overflow-y: scroll;
     width: 98%;
+    height: 406px;
 }
+.chat-container .chatInner {
+    border-bottom: 1px solid #eee;
+    min-height: 40px;
+    position: relative;
+}
+
 .chat-container span {
     color: #f76262;
+}
+.chatbox {
 }
 .chatbox textarea {
     width: 98%;
     padding: 1%;
+}
+.chatbox img {
+    top: 5px;
+    width: 30px;
+    border-radius: 50px;
+    position: absolute;
+    left: 0;
+}
+.whatever {
+    padding-left: 40px;
+    padding-top: 8px;
+}
+.chatbox .chatdate {
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    font-size: 11px;
+    color: gray;
 }
