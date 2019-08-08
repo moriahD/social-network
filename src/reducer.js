@@ -39,6 +39,17 @@ export default function(state = {}, action) {
             ...state,
             msgs: [...state.msgs, action.msg]
         };
+    } else if (action.type == "WALLPOST_MESSAGES") {
+        console.log(action);
+        state = {
+            ...state,
+            wpmsgs: action.wpmsgs
+        };
+    } else if (action.type == "WALLPOST_MESSAGE") {
+        state = {
+            ...state,
+            wpmsgs: [...state.wpmsgs, action.receiver_id, action.wpmsg]
+        };
     }
     return state;
 }

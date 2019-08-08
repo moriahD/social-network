@@ -37,7 +37,10 @@ export default class OtherProfile extends React.Component {
 
                         <p>{this.state.bio ? this.state.bio : "No bio yet"}</p>
                     </div>
-                    <WallPost />
+                    <WallPost
+                        friendProfileId={this.props.match.params.id}
+                        frienProfileFirstName={this.state.first_name}
+                    />
                 </div>
             </div>
         );

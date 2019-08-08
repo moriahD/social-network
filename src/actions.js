@@ -51,3 +51,36 @@ export async function chatMessage(msg) {
         msg
     };
 }
+export async function postMessages(wpmsgs) {
+    try {
+        const { data } = await axios.get("/wallpost.json");
+        console.log("data: ", data);
+        return {
+            type: "WALLPOST_MESSAGES",
+            wpmsgs: data
+        };
+    } catch (err) {
+        console.log("err in get wall post msgs", err);
+    }
+}
+export async function postMessage(receiver_id, wpmsg) {
+    console.log(
+        "post msg is happening with receiver_id, wpmsg: ",
+        receiver_id,
+        wpmsg
+    );
+    try {
+        const { data } = await axios.post(`/wallpost.json`, {
+            receiver_id,
+            wpmsg
+        });
+        console.log("postMessage data:", data);
+        return {
+            type: "WALLPOST_MESSAGE",
+            receiver_id,
+            wpmsg
+        };
+    } catch (err) {
+        console.log("err for posting wall post msg ", err);
+    }
+}

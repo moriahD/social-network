@@ -269,9 +269,39 @@ app.get("/welcome", function(req, res) {
         res.sendFile(__dirname + "/index.html");
     }
 });
-// app.get("/chat.json", function(req, res) {
-//     console.log("chat page");
-// });
+app.get("/wallpost.json", async function(req, res) {
+    try {
+        await db.getWallPostMessages().then(data => {
+            console.log("get wallpost data: ", data);
+            return res.json(data.rows);
+        });
+    } catch (err) {
+        console.log("Error Message in /wallpost getting router: ", err);
+    }
+});
+app.post("/wallpost.json", async function(req, res) {
+    const sender_id = req.session.userId;
+    console.log("req.body", req.body);
+    try {
+        await db
+            .saveWallPostMsg(sender_id, req.body.receiver_id, req.body.wpmsg)
+            .then(result => {
+                console.log("result of save WallPostMsg:", result);
+                return db.getUserById(req.session.userId).then(data => {
+                    data.rows[0].sender_id = data.rows[0].id;
+                    data.rows[0].wpmessage = result.rows[0].wpmessage;
+                    data.rows[0].created_at = result.rows[0].created_at;
+                    console.log("new wall post message data:", data.rows[0]);
+                    res.json(data.rows[0]);
+                });
+            })
+            .catch(err => console.log("err in saving new message:", err));
+        console.log("sender_id", sender_id);
+        // return res.json({ msg });
+    } catch (err) {
+        console.log("Error Message in /wallpost posting router: ", err);
+    }
+});
 // server side socket code
 io.on("connection", function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
