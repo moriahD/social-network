@@ -68,9 +68,8 @@ button {
     background-color: #3fc1c9;
     border: 0;
     color: #f5f5f5;
-    margin: 5px;
     padding: 10px;
-    width: 96%;
+    width: 100%;
 }
 button:hover {
     background-color: #fc5185;
@@ -161,13 +160,18 @@ button:hover {
     color: #f5f5f5;
 }
 .profileBox {
-    padding: 70px 20px 20px 20px;
+    margin: 70px 1% 1% 1%;
     display: inline-flex;
-    width: 96%;
+    width: 98%;
+    background: #f5f5f5;
+    opacity: 0.95;
+}
+.wrapBioAndWallPost {
+    width: 85%;
 }
 .profileImg {
-    width: 20%;
-    padding-right: 20px;
+    width: 15%;
+    padding: 20px;
 }
 .profileImg img {
     width: 100%;
@@ -175,7 +179,9 @@ button:hover {
 }
 .bioeditorBox {
     color: #f5f5f5;
-    width: 50%;
+}
+.bioeditorBox h1 {
+    color: #364f6b;
 }
 .bioTextarea {
     width: 100%;
@@ -213,12 +219,13 @@ button:hover {
     padding: 1%;
     overflow-y: scroll;
     width: 98%;
-    height: 406px;
+    height: 400px;
 }
 .chat-container .chatInner {
     border-bottom: 1px solid #eee;
     min-height: 40px;
     position: relative;
+    padding-bottom: 5px;
 }
 
 .chat-container span {
@@ -231,7 +238,7 @@ button:hover {
     padding: 1%;
 }
 .chatbox img {
-    top: 5px;
+    top: 8px;
     width: 30px;
     border-radius: 50px;
     position: absolute;
@@ -239,7 +246,7 @@ button:hover {
 }
 .whatever {
     padding-left: 40px;
-    padding-top: 8px;
+    padding-top: 10px;
 }
 .chatbox .chatdate {
     right: 0;
@@ -247,4 +254,13 @@ button:hover {
     position: absolute;
     font-size: 11px;
     color: gray;
+}
+.wallpostBox {
+    padding: 20px 0;
+}
+.wallpostBox textarea {
+    width: 98%;
+}
+.wallposttitle {
+    color: #f76262;
 }

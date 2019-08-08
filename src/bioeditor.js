@@ -44,6 +44,7 @@ export default class BioEditor extends React.Component {
                         <button onClick={e => this.submit(e)}>save</button>
                     </div>
                 )}
+                {!this.props.bio && <p>Add your bio.</p>}
                 {this.props.bio}
 
                 <button onClick={() => this.setState({ editing: true })}>

@@ -7,6 +7,7 @@ import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
 import Chat from "./chat";
+import WallPost from "./wallpost";
 import axios from "./axios";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 
@@ -104,6 +105,7 @@ export default class App extends React.Component {
                         <Route path="/findpeople" component={FindPeople} />
                         <Route path="/friends" component={Friends} />
                         <Route path="/chat" component={Chat} />
+                        <Route path="/wallpost" component={WallPost} />
                     </div>
                 </BrowserRouter>
 

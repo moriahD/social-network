@@ -15,16 +15,16 @@ export default function Chat() {
         console.log("elemRef", elemRef);
         console.log("scroll top: ", elemRef.current.scrollTop);
         console.log("scroll height: ", elemRef.current.scrollHeight);
-        console.log("scroll height: ", elemRef.current.clientHeight);
+        console.log("client height: ", elemRef.current.clientHeight);
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
     }, []);
     const keyCheck = e => {
-        console.log("e.target.value: ", e.target.value);
+        // console.log("e.target.value: ", e.target.value);
         console.log("e.key", e.key);
         if (e.key === "Enter") {
             e.preventDefault();
-            console.log("Enter was pressed!");
+            // console.log("Enter was pressed!");
             socket.emit("newMessage", e.target.value);
             e.target.value = "";
         }
