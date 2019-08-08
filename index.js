@@ -287,8 +287,10 @@ app.post("/wallpost.json", async function(req, res) {
             .saveWallPostMsg(sender_id, req.body.receiver_id, req.body.wpmsg)
             .then(result => {
                 console.log("result of save WallPostMsg:", result);
-                return db.getUserById(req.session.userId).then(data => {
-                    data.rows[0].sender_id = data.rows[0].id;
+                return db.getUserById(result.rows[0].sender_id).then(data => {
+                    data.rows[0].sender_id = result.rows[0].sender_id;
+                    data.rows[0].receiver_id = result.rows[0].receiver_id;
+
                     data.rows[0].wpmessage = result.rows[0].wpmessage;
                     data.rows[0].created_at = result.rows[0].created_at;
                     console.log("new wall post message data:", data.rows[0]);
@@ -318,8 +320,8 @@ io.on("connection", function(socket) {
                 console.log("result:", result);
                 return db.getUserById(userId).then(data => {
                     console.log("new chat message data:", data.rows[0]);
-
-                    data.rows[0].sender_id = data.rows[0].id;
+                    data.rows[0].id = result.rows[0].id;
+                    data.rows[0].sender_id = data.rows[0].sender_id;
                     data.rows[0].message = result.rows[0].message;
                     data.rows[0].created_at = result.rows[0].created_at;
                     io.emit("chatMessage", data.rows[0]);

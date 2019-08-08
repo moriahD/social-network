@@ -108,15 +108,15 @@ exports.saveWallPostMsg = function saveWallPostMsg(
 ) {
     return db.query(
         `
-        INSERT INTO wallpost (sender_id, receiver_id, wpmessage) VALUES ($1, $2, $3) RETURNING*, to_char( created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at`,
+        INSERT INTO wallpost (sender_id, receiver_id, wpmessage) VALUES ($1, $2, $3) RETURNING*, to_char( created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at `,
         [sender_id, receiver_id, wpmessage]
     );
 };
 exports.getWallPostMessages = function getWallPostMessages() {
     return db.query(`
-        SELECT users.first_name, users.last_name, users.image, users.id , wallpost.wpmessage, wallpost.created_at, to_char( wallpost.created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at
+        SELECT users.first_name, users.last_name, users.image, wallpost.sender_id ,wallpost.receiver_id, wallpost.id, wallpost.wpmessage, wallpost.created_at, to_char( wallpost.created_at, 'DD-MON-YYYY HH24:MI:SS') as created_at
 FROM users
 right JOIN wallpost
-ON wallpost.sender_id = users.id  ORDER BY wallpost.created_at DESC;
+ON wallpost.sender_id = users.id ORDER BY wallpost.created_at DESC;
         `);
 };

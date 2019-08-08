@@ -16,6 +16,7 @@ p {
 }
 a {
     color: #3fc1c9;
+    text-decoration: none;
 }
 a:hover {
     color: #fc5185;
@@ -262,5 +263,28 @@ button:hover {
     width: 98%;
 }
 .wallposttitle {
+    color: #f76262;
+}
+.wallpostlistWrap {
+    display: inline-flex;
+    width: 98%;
+    padding: 5px;
+    position: relative;
+}
+.wallpostlistWrap img {
+    top: 8px;
+    width: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    position: absolute;
+    left: 0;
+}
+.wallpostlistWrap .wrapwallposts {
+    padding-left: 50px;
+}
+.names {
+    color: #3fc1c9;
+}
+.names:hover {
     color: #f76262;
 }

@@ -64,11 +64,11 @@ export async function postMessages(wpmsgs) {
     }
 }
 export async function postMessage(receiver_id, wpmsg) {
-    console.log(
-        "post msg is happening with receiver_id, wpmsg: ",
-        receiver_id,
-        wpmsg
-    );
+    // console.log(
+    //     "post msg is happening with receiver_id, wpmsg: ",
+    //     receiver_id,
+    //     wpmsg
+    // );
     try {
         const { data } = await axios.post(`/wallpost.json`, {
             receiver_id,
@@ -77,8 +77,7 @@ export async function postMessage(receiver_id, wpmsg) {
         console.log("postMessage data:", data);
         return {
             type: "WALLPOST_MESSAGE",
-            receiver_id,
-            wpmsg
+            wpmsg: data
         };
     } catch (err) {
         console.log("err for posting wall post msg ", err);

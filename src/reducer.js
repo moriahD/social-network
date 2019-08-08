@@ -40,15 +40,16 @@ export default function(state = {}, action) {
             msgs: [...state.msgs, action.msg]
         };
     } else if (action.type == "WALLPOST_MESSAGES") {
-        console.log(action);
+        console.log("WALLPOST_MESSAGES action:", action);
         state = {
             ...state,
             wpmsgs: action.wpmsgs
         };
     } else if (action.type == "WALLPOST_MESSAGE") {
+        console.log("WALLPOST_MESSAGE action:", action);
         state = {
             ...state,
-            wpmsgs: [...state.wpmsgs, action.receiver_id, action.wpmsg]
+            wpmsgs: [...state.wpmsgs, action.wpmsg]
         };
     }
     return state;

@@ -5,12 +5,18 @@ import { Link } from "react-router-dom";
 import { postMessage, postMessages } from "./actions";
 export default function WallPost(props) {
     const dispatch = useDispatch();
-    // const postMessages = useSelector(state => state && state.msgs);
     const receiver_id = props.friendProfileId;
-    const friendsposts = useSelector(state => state.wpmsgs);
+    console.log(props);
+    const friendsposts = useSelector(
+        state =>
+            state.wpmsgs &&
+            state.wpmsgs.filter(
+                wpmsg => wpmsg.receiver_id == props.friendProfileId
+            )
+    );
     console.log("friendsposts: ", friendsposts);
     useEffect(() => {
-        dispatch(postMessages());
+        dispatch(postMessages(receiver_id));
     }, []);
     if (!friendsposts) {
         return null;
@@ -40,12 +46,17 @@ export default function WallPost(props) {
             <div className="wallpostlist">
                 {friendsposts &&
                     friendsposts.map(wpmsg => (
-                        <div key={wpmsg.id}>
+                        <div className="wallpostlistWrap" key={wpmsg.id}>
                             <img src={wpmsg.image} />
                             <div className="wrapwallposts">
-                                <p>
-                                    {wpmsg.first_name} {wpmsg.last_name}
-                                </p>
+                                <Link
+                                    to={`/user/${wpmsg.sender_id}`}
+                                    target="_blank"
+                                >
+                                    <p className="names">
+                                        {wpmsg.first_name} {wpmsg.last_name}
+                                    </p>
+                                </Link>
                                 <p>{wpmsg.wpmessage}</p>
                                 <span>{wpmsg.created_at}</span>
                             </div>
